@@ -1,24 +1,33 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { emailChanged } from '../actions';
 import { Card, CardItem, Input, Button } from './common';
 
 class LoginForm extends Component {
+
+  onEmailChange = (text) => {
+    this.props.emailChanged(text);
+  }
+
   render(){
     return (
       <Card>
         <CardItem>
           <Input
             label="Email"
-            plasceholder="hello@test.com"
+            placeholder="hello@test.com"
+            onChangeText={this.onEmailChange}
           />
-
         </CardItem>
+
         <CardItem>
           <Input
             secureTextEntry
             label="Password"
-            plasceholder="******"
+            placeholder="******"
           />
         </CardItem>
+
         <CardItem>
           <Button> Click Meee </Button>
         </CardItem>
@@ -27,4 +36,4 @@ class LoginForm extends Component {
   }
 }
 
-export default LoginForm;
+export default connect(null, {emailChanged})(LoginForm);
