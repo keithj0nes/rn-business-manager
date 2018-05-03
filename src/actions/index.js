@@ -1,5 +1,11 @@
 import firebase from 'firebase';
-import { EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL } from './types';
+import {
+  EMAIL_CHANGED,
+  PASSWORD_CHANGED,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_FAIL,
+  LOGIN_USER
+} from './types';
 
 export const emailChanged = (text) => {
   return {
@@ -19,6 +25,7 @@ export const passwordChanged = (text) => {
 
 export const loginUser = ({email, password}) => {
   return (dispatch) => {
+    dispatch({type: LOGIN_USER})
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => {
         console.log('user being logged in in action creators');
@@ -35,9 +42,9 @@ export const loginUser = ({email, password}) => {
   }
 }
 
-//helper function
+//helper functions
 const loginUserSuccess = (dispatch, user) => {
-  dispatc({
+  dispatch({
     type: LOGIN_USER_SUCCESS,
     payload: user
   })

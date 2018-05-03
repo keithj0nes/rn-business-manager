@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { View, Text } from 'react-native';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
-import { Card, CardItem, Input, Button } from './common';
+import { Card, CardItem, Input, Button, Spinner } from './common';
 
 class LoginForm extends Component {
 
@@ -18,6 +19,29 @@ class LoginForm extends Component {
     const { email, password } = this.props;
 
     this.props.loginUser({ email, password});
+  }
+
+  renderError() {
+    if(this.props.error){
+      return (
+        <View style={{backgroundColor: '#fff'}}>
+          <Text style={styles.errorTextStyle}>
+            {this.props.error}
+          </Text>
+        </View>
+      )
+    }
+  }
+
+  renderTextOrSpinner(){
+    if(this.props.spinner){
+      return <Spinner />
+    }
+    return (
+      <Button whenPressed={this.onandleLogin}>
+        Log In
+      </Button>
+    )
   }
 
   render(){
@@ -42,20 +66,30 @@ class LoginForm extends Component {
           />
         </CardItem>
 
+        {this.renderError()}
+
         <CardItem>
-          <Button whenPressed={this.onandleLogin}>
-            Click Meee
-          </Button>
+          {this.renderTextOrSpinner()}
         </CardItem>
       </Card>
     )
   }
 }
 
+const styles = {
+  errorTextStyle: {
+    color: 'red',
+    fontSize: 20,
+    alignSelf: 'center'
+  }
+}
+
 const mapStateToProps = state => {
   return {
     email: state.auth.email,
-    password: state.auth.password
+    password: state.auth.password,
+    error: state.auth.error,
+    spinner: state.auth.spinner
   }
 }
 

@@ -1,11 +1,19 @@
-import { EMAIL_CHANGED, PASSWORD_CHANGED, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL } from '../actions/types';
+import {
+  EMAIL_CHANGED,
+  PASSWORD_CHANGED,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_FAIL,
+  LOGIN_USER
+} from '../actions/types';
 
 
 // INITIAL_STATE helps identify what is expected to be part of the authReducer's state
 const INITIAL_STATE = {
   email: '',
   password: '',
-  user: null
+  user: null,
+  error: '',
+  spinner: false
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,10 +24,12 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, email: action.payload};
     case PASSWORD_CHANGED:
       return {...state, password: action.payload};
+    case LOGIN_USER:
+      return {...state, spinner: true, error: ''};
     case LOGIN_USER_SUCCESS:
-      return {...state, user: action.payload};
+      return {...state, ...INITIAL_STATE, user: action.payload};
     case LOGIN_USER_FAIL:
-      return {...state}
+      return {...state, error: 'Authentication Failed', password: '', spinner: false};
     default:
       return state;
   }
