@@ -1,11 +1,17 @@
 import React from 'react';
-import { Picker } from 'react-native';
+import { Picker, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { employeeUpdate } from '../actions';
+import { employeeUpdate, employeeCreate } from '../actions';
 import { Card, CardItem, Input, Button } from './common';
 
 
 class EmployeeCreate extends React.Component {
+
+  handleButtonSubmit = () => {
+    const { name, phone, shift } = this.props;
+
+    this.props.employeeCreate({ name, phone, shift: shift || 'Monday' });
+  }
 
   render(){
     return (
@@ -27,7 +33,8 @@ class EmployeeCreate extends React.Component {
 
           />
         </CardItem>
-        <CardItem>
+        <CardItem style={{flexDirection: 'column'}}>
+          <Text style={styles.pickertTextStyle}> Shift </Text>
           <Picker style={{flex: 1}}
           selectedValue={this.props.shift}
           onValueChange={value => this.props.employeeUpdate({prop: 'shift', value})}
@@ -42,9 +49,8 @@ class EmployeeCreate extends React.Component {
           </Picker>
 
         </CardItem>
-        <CardItem></CardItem>
         <CardItem>
-          <Button>
+          <Button whenPressed={this.handleButtonSubmit}>
             Create
           </Button>
         </CardItem>
@@ -53,9 +59,16 @@ class EmployeeCreate extends React.Component {
   }
 }
 
+const styles = {
+  pickertTextStyle: {
+    fontSize: 18,
+    paddingLeft: 20
+  }
+}
+
 const mapStateToProps = state => {
   const { name, phone, shift } = state.employee;
 
   return { name, phone, shift };
 }
-export default connect(mapStateToProps, {employeeUpdate})(EmployeeCreate);
+export default connect(mapStateToProps, {employeeUpdate, employeeCreate})(EmployeeCreate);
