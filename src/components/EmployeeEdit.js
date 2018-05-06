@@ -3,12 +3,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Communications from 'react-native-communications';
 import EmployeeForm from './EmployeeForm';
-import { employeeUpdate, employeeSave } from '../actions';
+import { employeeUpdate, employeeSave, employeeDelete } from '../actions';
 import { Card, CardItem, Button, Confirm } from './common';
 
 class EmployeeEdit extends React.Component {
 
-  state = { showModal: false }
+  state = { showModal: false };
+
+
   componentWillMount(){
    _.each(this.props.employee, (value, prop) => {
      // console.log(value, prop, 'value and prop');
@@ -20,13 +22,22 @@ class EmployeeEdit extends React.Component {
     const { name, phone, shift } = this.props;
 
     console.log(name, shift, phone, 'LOGGING');
-    this.props.employeeSave({name, phone, shift, uid: this.props.employee.uid})
+    this.props.employeeSave({name, phone, shift, uid: this.props.employee.uid});
   }
 
   handleTextSubmit = () => {
-    const { phone, shift } = this.props;
-    Communications.text(phone, `Your upcoming shift is on ${shift}`);
+    const { phone, name, shift } = this.props;
+    Communications.text(phone, `Hey ${name}, your upcoming shift is on ${shift}`);
 
+  }
+
+  onAccept = () => {
+    console.log('deleting employee');
+    this.props.employeeDelete({uid: this.props.employee.uid})
+  }
+
+  showHideModal = () => {
+    this.setState({showModal: !this.state.showModal})
   }
   render(){
     return (
@@ -45,13 +56,17 @@ class EmployeeEdit extends React.Component {
         </CardItem>
 
         <CardItem>
-          <Button whenPressed={()=>{this.setState({showModal: !this.state.showModal})}}>
+          <Button whenPressed={this.showHideModal} ds={true}>
             Fire Employee
           </Button>
         </CardItem>
 
-        <Confirm visible={this.state.showModal}>
-          Are you sure you want to fire {this.props.employee.name}?
+        <Confirm
+          visible={this.state.showModal}
+          onAccept={this.onAccept}
+          onDecline={this.showHideModal}
+        >
+          Are you sure you want to fire {"\n"} {this.props.employee.name}?
         </Confirm>
       </Card>
     )
@@ -62,4 +77,4 @@ const mapStateToProps = state => {
   const { name, phone, shift } = state.employeeForm;
   return { name, phone, shift };
 }
-export default connect(mapStateToProps, { employeeUpdate, employeeSave })(EmployeeEdit);
+export default connect(mapStateToProps, { employeeUpdate, employeeSave, employeeDelete })(EmployeeEdit);

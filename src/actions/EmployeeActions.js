@@ -43,3 +43,15 @@ export const employeeSave = ({name, phone, shift, uid}) => {
       })
   }
 }
+
+export const employeeDelete = ({ uid }) => {
+  console.log('DELETING USER');
+  return (dispatch) => {
+    const { currentUser } = firebase.auth();
+    firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
+      .remove()
+      .then(() => {
+        Actions.pop();
+      })
+  }
+}

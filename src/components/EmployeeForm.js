@@ -28,7 +28,7 @@ class EmployeeForm extends React.Component {
         </CardItem>
         <CardItem style={{flexDirection: 'column'}}>
           <Text style={styles.pickertTextStyle}> Shift </Text>
-          <Picker style={{flex: 1}}
+          <Picker 
           selectedValue={this.props.shift}
           onValueChange={value => this.props.employeeUpdate({prop: 'shift', value})}
           >

@@ -21,7 +21,7 @@ const Confirm = ({children, onAccept, onDecline, visible}) => {
           </Text>
         </CardItem>
         <CardItem>
-          <Button whenPressed={onAccept}>Yes</Button>
+          <Button whenPressed={onAccept} ds={true} >Yes</Button>
           <Button whenPressed={onDecline}>No</Button>
         </CardItem>
       </View>
@@ -38,12 +38,15 @@ const styles = {
   },
 
   cardItemStyle: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: '50%'
   },
   containerStyle: {
     backgroundColor: 'rgba(0,0,0,0.75)',
     position: 'relative',
     flex: 1,
+    padding: 20,
     justifyContent: 'center'
   }
 }
