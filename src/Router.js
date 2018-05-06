@@ -4,17 +4,20 @@ import LoginForm from './components/LoginForm';
 import EmployeeList from './components/EmployeeList';
 import EmployeeCreate from './components/EmployeeCreate';
 import EmployeeEdit from './components/EmployeeEdit';
+import Manager from './components/Manager';
 
 
 const RouterComponent = () => {
   return (
     <Router>
       <Scene key="root" hideNavBar>
-        <Scene key="auth">
+        <Scene key="auth" direction="leftToRight">
           <Scene key="login" component={LoginForm} title="Please Login" initial/>
         </Scene>
         <Scene key="main">
           <Scene
+            leftTitle="Me"
+            onLeft={()=> Actions.manager()}
             rightTitle="Add"
             onRight={() => Actions.employeeCreate()}
             key="employeeList"
@@ -27,6 +30,12 @@ const RouterComponent = () => {
             key="employeeCreate"
             component={EmployeeCreate}
             title="Create Employee"
+          />
+
+          <Scene
+            key="manager"
+            component={Manager}
+            title="Me"
           />
 
           <Scene

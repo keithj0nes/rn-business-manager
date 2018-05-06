@@ -23,7 +23,13 @@ export const passwordChanged = (text) => {
   }
 }
 
-
+export const signOut = () => {
+  return (dispatch) => {
+    firebase.auth().signOut().then(()=>{
+      Actions.auth();
+    })
+  }
+}
 
 export const loginUser = ({email, password}) => {
   return (dispatch) => {
@@ -43,6 +49,7 @@ export const loginUser = ({email, password}) => {
       })
   }
 }
+
 
 //helper functions
 const loginUserSuccess = (dispatch, user) => {
