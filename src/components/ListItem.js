@@ -6,7 +6,7 @@ import { CardItem } from './common';
 class ListItem extends React.Component {
 
 handleEmployeePress = () => {
-  Actions.employeeCreate({employee: this.props.employee});
+  Actions.employeeEdit({employee: this.props.employee});
 }
 
 
